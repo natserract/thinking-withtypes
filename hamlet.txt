@@ -1,0 +1,1 @@
+The idea is to make the file’s content lowercased, then split it into a list of words, sort them, and then remove repetitions by grouping same words together and taking the first word in each group. Haskellers often check the types of functions they use right in GHCi as follows:
