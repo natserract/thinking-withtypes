@@ -1,3 +1,10 @@
+module Modules.Chapter01 
+  ( ticTacToeWinner
+  , Player(..) 
+  )
+  where
+
+import Data.Maybe (isJust)
 
 -- | Chapter 1 - The Algebra Behind Types
 -- https://wiki.haskell.org/Algebraic_data_type
@@ -30,6 +37,10 @@ data Bool' = Falsy | Truthy
 -- Keywords: inverse
 data Spin = Up | Down
 -- ^ cardinality -> 2
+
+-- Rumus kardinalitas
+-- |a->b| = |b|×|b|×···×|b| = |b|(kuadrat|a|)
+          -- |a| times (dikali banyaknya a)
 --
 -- to isomorphisms
 boolToSpin:: Bool -> Spin
@@ -87,6 +98,10 @@ startsWithJohn a = case a of
   -- FullNamesAnd ... Martinez 
   -- dan selanjutnya
 
+-- Exercise 1.2-i:
+-- Determine the cardinality of `Either Bool (Bool, Maybe Bool) -> Bool`
+--- |Either Bool (Bool, Maybe Bool)| = |2| + (2, 1 + 2)
+
 -- Learn from build tictactoe game
 -- Concept, 3 baris horizontal dan vertical
 {-
@@ -97,8 +112,8 @@ startsWithJohn a = case a of
 -}
 --
 -- (1. TTO) First, start think of structure
--- You can called, x = horizontal, y = vertical, ex: (x1, x2, x3, y1, y2, y3, ..)
-data TicTacToe a = TicTacToe
+-- You can called, x = horizontal, y = vertical, ex: (x1, x2, x3 ..)
+data TicTacToe a = TicTacToe -- model of tictactoe schema position (high level)
   { topLeft:: a
   , topCenter:: a
   , topRight:: a
@@ -122,9 +137,75 @@ emptyBoard =
   --   topLeft = Nothing
   --   ...
   -- }
-  -- ^ you can create like that, but haskell give us another beautiful solution => remove {}
+  -- ^ you can create like that, but haskell give us another beautiful solution => without {}
 
 -- (3. TTO) Analisis cardinality
 -- TicTacToe => |TicTacToe a| = |a| x |a| x |a| .. (9 kali)
                           -- = |a|(9)
                           -- = |a|(3*3)
+-- isomorphisms:
+-- a -> (Three, Three)
+-- (Three, Three) -> a
+
+-- Re-analysis ...
+-- Jika dilihat diatas, kita harus define posisinya satu2 (`data TicTacToe a` = ... )
+-- Ini menjadi tidak efektif, bagaimana kalau struktur datanya banyak dan kompleks?
+-- 
+-- So, jika diperhatikan lagi TTO ini punya 3 baris vertical dan 3 bariz horizontal, 
+-- kemudian disini hanya ada 2 pemain, dimana pemain bisa menempatkan tempat dimanapun
+--
+-- (Note: disini saya buat sedikit aga berbeda dari buku)
+-- -- 1. Kita buat persiapan dlu, yaitu board nya
+type Step = Int -- Just synonym (try to keep readable)
+-- ^ Step adalah langkah pemain take position
+
+data Board = Board (Step, Step, Step)
+--
+-- 2. Turun ke next down level, setelah persiapan board
+-- Buat model play gamenya ...
+--
+-- Pemain (2 players) input step, (save to state)
+data Player = Player1 | Player2 
+instance Show Player where 
+  show (Player1) = "(The win of tictactoe is: " <> " Player 1" <> " )";
+  show (Player2) = "(The win of tictactoe is: " <> " Player 2" <> " )";
+
+-- deriving (Eq, Show) -- automation instance
+
+-- 2. check possibility
+    {-
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    -}
+-- 3. Check winner
+-- - The winner take stepnya harus berjumlah 3
+-- - Jika contains dari list tersebut maka player win dan game stop
+
+-- (4. TTO) modelling types input for function
+-- You know, you must think everything is a function,
+-- Perfunction punya tugas masing2 (SRP)
+-- Before doing that, define input types first
+isWin :: Board -> Maybe Bool
+isWin t = do
+  case t of 
+     Board (0, 1, 2) -> Just True
+     -- ^ ... 
+     _ -> Nothing
+
+playTicTacToe :: Player -> String
+playTicTacToe p
+   | isJust (p1) = show $ Player1
+   | isJust (p2) = show $ Player2
+   | otherwise = show $ "Nothing"
+  where 
+    p1 = isWin (Board (0, 1, 2))
+    p2 = isWin (Board (3, 6, 7))
+
+ticTacToeWinner :: String
+ticTacToeWinner = playTicTacToe $ Player1

@@ -28,7 +28,6 @@ library
       Modules.Chapter01
       Other.Lib
       Other.Recursive
-      Other.SumArray
   other-modules:
       Paths_project
   hs-source-dirs:

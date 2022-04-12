@@ -2,6 +2,9 @@ module Main where
 import Data.Char (toLower, toTitle, toUpper)
 import Prelude hiding (Word)
 import Unsafe.Coerce
+import Modules.Chapter01 (ticTacToeWinner)
+-- import Modules.Chapter01 (Player(...))
+-- import Modules.Chapter01 (Player(Player1))
 
 -- import Lib
 
@@ -149,4 +152,5 @@ main = do
   print $ modernise "the morphology of prex"
   print $ fun
   print $ getPersonName "Benjamin"
+  print $ ticTacToeWinner
   

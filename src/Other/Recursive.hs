@@ -1,4 +1,4 @@
-module Recursive
+module Other.Recursive
     ( someFunc
     ) where
 

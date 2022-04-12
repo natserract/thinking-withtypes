@@ -1,4 +1,4 @@
-module Lib (
+module Other.Lib (
   print_tree,
 ) where
 
