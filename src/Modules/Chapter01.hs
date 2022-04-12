@@ -14,7 +14,7 @@ import Data.Maybe (isJust)
 fst' :: String
 fst' = fst ("no problems", True)
 
--- 1.1 Isomorphisms and Cardinalities
+-- | 1.1 Isomorphisms and Cardinalities
 --
 -- ## Teory (Math):
 -- - Kardinalitas: banyak anggota suatu himpunan, contoh: A = {1, 22, 3} dpt ditulis |A| = 3
@@ -53,7 +53,7 @@ spinToBool Down = False
 --
 -- In general, for any two types with cardinality n, there are n! unique isomorphisms between them
 
--- 1.2 Sum, Product and Exponential Types
+-- | 1.2 Sum, Product and Exponential Types
 --
 -- Type has 3 structure, 
 -- 1. Product types = AND (x*y), 
@@ -102,6 +102,7 @@ startsWithJohn a = case a of
 -- Determine the cardinality of `Either Bool (Bool, Maybe Bool) -> Bool`
 --- |Either Bool (Bool, Maybe Bool)| = |2| + (2, 1 + 2)
 
+-- | 1.3 Example: Tic-Tac-Toe
 -- Learn from build tictactoe game
 -- Concept, 3 baris horizontal dan vertical
 {-
@@ -209,3 +210,22 @@ playTicTacToe p
 
 ticTacToeWinner :: String
 ticTacToeWinner = playTicTacToe $ Player1
+
+
+-- | 1.4 The Curry–Howard Isomorphism
+{-
+  Algebra     Logic       Types
+  a+b         a∨b         Either a b
+  a×b         a∧b         (a, b)
+  ba          a ==> b      a->b
+  a=b         a <== b     isomorphism
+  0           ⊥           Void
+  1           ⊤           ()
+
+  Theorem
+  a1 = a
+  () -> a and a
+
+  Give a proof of (ab)c = ab×c. Does it remind you of anything from Prelude?
+  Answer: (.) :: (b -> c) -> (a -> b) -> a -> c
+-}
