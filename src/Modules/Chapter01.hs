@@ -160,7 +160,7 @@ emptyBoard =
 type Step = Int -- Just synonym (try to keep readable)
 -- ^ Step adalah langkah pemain take position
 
-data Board = Board (Step, Step, Step)
+data Board = Board (Step, Step, Step) deriving (Eq)
 --
 -- 2. Turun ke next down level, setelah persiapan board
 -- Buat model play gamenya ...
@@ -168,8 +168,11 @@ data Board = Board (Step, Step, Step)
 -- Pemain (2 players) input step, (save to state)
 data Player = Player1 | Player2 
 instance Show Player where 
-  show (Player1) = "(The win of tictactoe is: " <> " Player 1" <> " )";
-  show (Player2) = "(The win of tictactoe is: " <> " Player 2" <> " )";
+  show p = "(The win of tictactoe is: " <> show player <> " )"
+    where 
+      player = case p of
+        Player1 -> "Player 1"
+        Player2 -> "Player 2"
 
 -- deriving (Eq, Show) -- automation instance
 
@@ -193,11 +196,16 @@ instance Show Player where
 -- Perfunction punya tugas masing2 (SRP)
 -- Before doing that, define input types first
 isWin :: Board -> Maybe Bool
-isWin t = do
-  case t of 
-     Board (0, 1, 2) -> Just True
-     -- ^ ... 
-     _ -> Nothing
+isWin t 
+  | t == Board (0, 1, 2) || 
+    t == Board (3, 4, 5) ||
+    t == Board (6, 7, 8) ||
+    t == Board (0, 3, 6) ||
+    t == Board (1, 4, 7) ||
+    t == Board (2, 5, 8) ||
+    t == Board (0, 4, 8) ||
+    t == Board (2, 4, 6) = Just True
+  | otherwise = Nothing
 
 playTicTacToe :: Player -> String
 playTicTacToe p
@@ -205,12 +213,11 @@ playTicTacToe p
    | isJust (p2) = show $ Player2
    | otherwise = show $ "Nothing"
   where 
-    p1 = isWin (Board (0, 1, 2))
+    p1 = isWin (Board (2, 4, 6))
     p2 = isWin (Board (3, 6, 7))
 
 ticTacToeWinner :: String
 ticTacToeWinner = playTicTacToe $ Player1
-
 
 -- | 1.4 The Curry–Howard Isomorphism
 {-

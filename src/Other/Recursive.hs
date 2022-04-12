@@ -1,5 +1,5 @@
 module Other.Recursive
-    ( someFunc
+    ( readFileText
     ) where
 
 import Data.List;
@@ -11,23 +11,14 @@ import Debug.Trace (trace)
 -- filter:: (a -> Bool) -> [a] -> [a] 
 -- not :: Bool -> Bool
 
-someFunc :: IO ()
-someFunc = do
+readFileText :: IO ()
+readFileText = do
     text <- readFile "./hamlet.txt";
     let ws = words $ map toLower text
     let ws' = map (takeWhile isLetter . dropWhile (not . isLetter)) ws
     let ws'' = map head $ group $ sort $ words $ map toLower text
-    -- let cleanedWords = filter (not . null) ws'
-    -- null [1, 2, 3]
-    -- (\x -> not (null x))
-    -- not . null = null x
-    -- not = a, null = b
-    -- null x ->
     let cleanedWords = filter (\x -> not (null x)) ws'
     print cleanedWords
-
-
-
 
 {--
    Think recursive in haskell.
@@ -55,7 +46,6 @@ length' :: [a] -> Int
 length' [] = 0
 length' (x:xs) = do
      1 + length' xs
-
 
 {--
   The process:

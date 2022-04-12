@@ -26,7 +26,7 @@ source-repository head
 library
   exposed-modules:
       Modules.Chapter01
-      Other.Lib
+      Other.Function
       Other.Recursive
   other-modules:
       Paths_project
