@@ -1,5 +1,9 @@
+{-# LANGUAGE TypeFamilies #-}
+
 module Modules.Chapter02 where
 import Data.Functor ((<&>))
+import Data.Kind (Constraint)
+import Control.Monad
 
 -- | Chapter 2 - TERMS,TYPES AND KINDS
 -- 
@@ -53,5 +57,42 @@ kindT2' = Left 1
 -- Rules: Everything above order/rank 1 is called higher-order, higher-rank or higher-kinded
 -- 
 -- Functor :: (* -> *) -> Constraint
+-- Monad :: (* -> *) -> Constraint
 hkt :: Maybe String
 hkt = (Just 3) <&> show
+
+-- # Constraint kinds
+-- Constraints (which appear in types to the left of the => arrow) have a very restricted syntax
+-- More generally, CONSTRAINT is the kind of any fully-saturated typeclass
+-- 
+-- Rules:
+-- - Class constraints, e.g. Show 
+-- - Implicit parameter constraints, e.g. ?x::Int (with the -XImplicitParams flag)
+-- - Equality constraints, e.g. a ~ Int (with the -XTypeFamilies or -XGADTs flag)
+
+contraintSw :: Show a => p -> a -> String
+contraintSw a = show
+
+-- type family
+type family Typ a b :: Constraint
+type instance Typ Int b = Show b
+type instance Typ Bool b = Num b
+
+contraintTf' :: Typ a b => a -> b -> b
+contraintTf' = error "(contraintTf'): not implemented"
+
+-- Exercise 2.1.3-i
+-- Question: If Show Int has kind CONSTRAINT, what’s the kind of Show?
+-- Answer: * -> Constraint
+
+-- Exercise 2.1.3-ii
+-- Question: What is the kind of Functor?
+-- Answer: (* -> *) -> Constraint
+
+-- Exercise 2.1.3-iii
+-- Question: What is the kind of Monad?
+-- Answer: (* -> *) -> Constraint
+
+-- Exercise 2.1.3-iv
+-- Question: What is the kind of MonadTrans?
+-- Answer: (t :: (* -> *) -> * -> *) (m :: * -> *)
