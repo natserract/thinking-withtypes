@@ -96,3 +96,7 @@ contraintTf' = error "(contraintTf'): not implemented"
 -- Exercise 2.1.3-iv
 -- Question: What is the kind of MonadTrans?
 -- Answer: (t :: (* -> *) -> * -> *) (m :: * -> *)
+
+
+-- References:
+-- https://kseo.github.io/posts/2017-01-13-constraint-kinds.html
