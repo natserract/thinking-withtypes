@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Modules.Chapter01
+      Modules.Chapter02
       Other.Function
       Other.Recursive
   other-modules:
